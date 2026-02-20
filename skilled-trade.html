@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ElectroOficio — Portfolio Profesional</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;600;700&family=Barlow+Condensed:wght@500;700&display=swap" rel="stylesheet">
+<style>
+
+/* ══════════════════════════════════
+   VARIABLES & RESET
+══════════════════════════════════ */
+:root {
+  --yellow: #F5C400;
+  --yellow-dim: #c49a00;
+  --dark: #0d0d0d;
+  --dark2: #141414;
+  --dark3: #1c1c1c;
+  --light: #e8e8e8;
+  --muted: #888;
+  --pad: clamp(1.25rem, 5vw, 5rem);
+  --r: 5px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--dark);
+  color: var(--light);
+  font-family: 'Barlow', sans-serif;
+  font-weight: 300;
+  overflow-x: hidden;
+  min-width: 320px;
+}
+
+img { max-width: 100%; display: block; }
+
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 9999; opacity: 0.3;
+}
+
+/* ══ Typography ══ */
+.section-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(0.68rem, 1.5vw, 0.82rem);
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--yellow);
+  margin-bottom: 0.6rem;
+}
+.section-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2rem, 6vw, 4rem);
+  letter-spacing: 2px;
+  line-height: 1;
+  color: var(--light);
+  margin-bottom: 1rem;
+}
+.section-desc {
+  color: var(--muted);
+  line-height: 1.8;
+  font-size: clamp(0.88rem, 2vw, 1rem);
+  max-width: 560px;
+}
+
+/* ══ Buttons ══ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: clamp(0.7rem, 2vw, 0.9rem) clamp(1.2rem, 4vw, 2rem);
+  border-radius: var(--r);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: clamp(0.85rem, 2vw, 1rem);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: all 0.2s;
+  cursor: pointer;
+  border: none;
+  white-space: nowrap;
+}
+.btn-primary { background: var(--yellow); color: #000; }
+.btn-primary:hover { background: var(--yellow-dim); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(245,196,0,0.3); }
+.btn-outline { background: transparent; color: var(--light); border: 1px solid rgba(255,255,255,0.2); }
+.btn-outline:hover { border-color: var(--yellow); color: var(--yellow); transform: translateY(-2px); }
+
+@media (max-width: 380px) { .btn { width: 100%; } }
+
+/* ══════════════════════════════════
+   NAVBAR
+══════════════════════════════════ */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: clamp(0.75rem, 2vw, 1.2rem) var(--pad);
+  background: rgba(13,13,13,0.94);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(245,196,0,0.15);
+  transition: border-color 0.3s;
+  gap: 1rem;
+}
+
+.logo { display: flex; align-items: center; gap: 0.6rem; text-decoration: none; flex-shrink: 0; }
+.logo-icon {
+  width: clamp(34px,5vw,42px); height: clamp(34px,5vw,42px);
+  background: var(--yellow); border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: clamp(1rem,3vw,1.4rem);
+}
+.logo-text {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(1.1rem,3vw,1.5rem); letter-spacing: 2px; color: var(--light); line-height: 1;
+}
+.logo-text span { color: var(--yellow); }
+
+/* desktop links */
+.nav-links { display: flex; align-items: center; gap: clamp(1rem,2.5vw,2rem); list-style: none; }
+.nav-links a {
+  text-decoration: none; color: var(--muted);
+  font-family: 'Barlow Condensed', sans-serif; font-weight: 500;
+  font-size: 0.88rem; letter-spacing: 1.5px; text-transform: uppercase; transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--yellow); }
+.nav-cta { background: var(--yellow) !important; color: #000 !important; padding: 0.45rem 1.1rem; border-radius: 4px; font-weight: 700 !important; }
+.nav-cta:hover { background: var(--yellow-dim) !important; }
+
+/* hamburger */
+.hamburger {
+  display: none; flex-direction: column; gap: 5px;
+  cursor: pointer; background: none; border: none; padding: 6px; flex-shrink: 0; z-index: 20;
+}
+.hamburger span { display: block; width: 24px; height: 2px; background: var(--light); border-radius: 2px; transition: all 0.3s; }
+.hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* ── mobile nav ── */
+@media (max-width: 820px) {
+  .hamburger { display: flex; }
+
+  .nav-links {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(8,8,8,0.98);
+    flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 2rem; z-index: 15;
+  }
+  .nav-links.open { display: flex; }
+  .nav-links a { font-size: clamp(1.3rem,5vw,1.8rem); letter-spacing: 3px; }
+  .nav-cta { padding: 0.7rem 2rem !important; font-size: clamp(1.1rem,4vw,1.4rem) !important; }
+}
+
+/* ══════════════════════════════════
+   HERO
+══════════════════════════════════ */
+#hero {
+  min-height: 100svh;
+  display: flex; align-items: center;
+  padding: clamp(6rem,14vw,9rem) var(--pad) clamp(3rem,6vw,5rem);
+  position: relative; overflow: hidden;
+}
+.hero-bg {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 70% 50%, rgba(245,196,0,0.07) 0%, transparent 70%),
+    repeating-linear-gradient(90deg, transparent, transparent 80px, rgba(255,255,255,0.012) 80px, rgba(255,255,255,0.012) 81px),
+    repeating-linear-gradient(0deg,  transparent, transparent 80px, rgba(255,255,255,0.012) 80px, rgba(255,255,255,0.012) 81px);
+}
+.hero-content { position: relative; z-index: 1; width: 100%; max-width: 720px; }
+
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  background: rgba(245,196,0,0.1); border: 1px solid rgba(245,196,0,0.3);
+  color: var(--yellow); padding: 0.35rem 0.9rem; border-radius: 100px;
+  font-size: clamp(0.62rem,1.5vw,0.78rem); font-family: 'Barlow Condensed', sans-serif;
+  letter-spacing: 2px; text-transform: uppercase; margin-bottom: 1.2rem;
+  animation: fadeUp 0.6s ease both;
+}
+
+h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(3rem, 12vw, 7.5rem);
+  line-height: 0.95; letter-spacing: 2px; color: var(--light);
+  animation: fadeUp 0.7s 0.1s ease both; word-break: break-word;
+}
+h1 .accent { color: var(--yellow); }
+
+.hero-sub {
+  margin-top: 1.25rem;
+  font-size: clamp(0.9rem,2.5vw,1.15rem);
+  color: var(--muted); max-width: 520px; line-height: 1.75;
+  animation: fadeUp 0.7s 0.2s ease both;
+}
+.hero-actions {
+  margin-top: 2rem; display: flex; gap: 0.75rem; flex-wrap: wrap;
+  animation: fadeUp 0.7s 0.3s ease both;
+}
+.hero-stats {
+  margin-top: 3rem; display: flex; gap: clamp(1.5rem,5vw,3rem); flex-wrap: wrap;
+  animation: fadeUp 0.7s 0.4s ease both;
+  padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.07);
+}
+.stat-num { font-family: 'Bebas Neue', sans-serif; font-size: clamp(1.8rem,5vw,3rem); color: var(--yellow); line-height: 1; }
+.stat-label { font-size: clamp(0.68rem,1.5vw,0.8rem); color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-top: 0.15rem; }
+
+.hero-deco {
+  position: absolute; right: 3%; top: 50%; transform: translateY(-50%);
+  font-family: 'Bebas Neue', sans-serif; font-size: clamp(6rem,22vw,18rem);
+  opacity: 0.03; pointer-events: none; user-select: none; line-height: 1;
+  animation: fadeIn 1.2s ease both;
+}
+@media (max-width: 480px) { .hero-deco { display: none; } .hero-stats { gap: 1.2rem; } }
+
+/* ══════════════════════════════════
+   SECTION BASE
+══════════════════════════════════ */
+.sec { padding: clamp(3rem,8vw,6.5rem) var(--pad); }
+.sec-alt { background: var(--dark2); }
+
+/* ══════════════════════════════════
+   SERVICIOS
+══════════════════════════════════ */
+.services-grid {
+  margin-top: clamp(2rem,5vw,3.5rem);
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 1.5px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.05);
+}
+@media (max-width: 900px) { .services-grid { grid-template-columns: repeat(2,1fr); } }
+@media (max-width: 500px) { .services-grid { grid-template-columns: 1fr; } }
+
+.service-card {
+  background: var(--dark2);
+  padding: clamp(1.4rem,4vw,2.5rem) clamp(1.1rem,3vw,2rem);
+  transition: background 0.25s; position: relative; overflow: hidden;
+}
+.service-card::after {
+  content: ''; position: absolute; bottom: 0; left: 0;
+  width: 0; height: 3px; background: var(--yellow); transition: width 0.35s ease;
+}
+.service-card:hover { background: var(--dark3); }
+.service-card:hover::after { width: 100%; }
+
+.service-icon { font-size: clamp(1.8rem,4vw,2.4rem); margin-bottom: 0.85rem; display: block; }
+.service-name {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(0.95rem,2.5vw,1.2rem); font-weight: 700;
+  letter-spacing: 1px; color: var(--light); text-transform: uppercase; margin-bottom: 0.5rem;
+}
+.service-desc { font-size: clamp(0.8rem,1.8vw,0.9rem); color: var(--muted); line-height: 1.7; }
+
+/* ══════════════════════════════════
+   TRABAJOS
+══════════════════════════════════ */
+.works-grid {
+  margin-top: clamp(2rem,5vw,3.5rem);
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: clamp(0.5rem,1.5vw,1rem);
+}
+@media (max-width: 900px) { .works-grid { grid-template-columns: repeat(2,1fr); } }
+@media (max-width: 480px) { .works-grid { grid-template-columns: 1fr; } }
+
+.work-card {
+  background: var(--dark3); border: 1px solid rgba(255,255,255,0.07); border-radius: var(--r);
+  overflow: hidden; cursor: pointer; transition: transform 0.3s, box-shadow 0.3s;
+}
+.work-card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+.work-card:active { transform: translateY(-2px); }
+
+.work-thumb {
+  height: clamp(150px,20vw,230px); display: flex; align-items: center; justify-content: center;
+  font-size: clamp(2.2rem,5vw,4rem);
+}
+.wt1 { background: linear-gradient(135deg,#1a1a1a,#2a2010); }
+.wt2 { background: linear-gradient(135deg,#101a1a,#102020); }
+.wt3 { background: linear-gradient(135deg,#1a1015,#201020); }
+.wt4 { background: linear-gradient(135deg,#0f1520,#101a30); }
+.wt5 { background: linear-gradient(135deg,#1a1500,#2a2000); }
+.wt6 { background: linear-gradient(135deg,#151a10,#202a10); }
+
+.work-info { padding: clamp(0.8rem,2vw,1.25rem) clamp(0.9rem,2.5vw,1.5rem); }
+.work-tag { font-size: 0.68rem; letter-spacing: 2px; text-transform: uppercase; color: var(--yellow); font-family: 'Barlow Condensed', sans-serif; margin-bottom: 0.3rem; }
+.work-title { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(0.88rem,2vw,1.05rem); font-weight: 700; color: var(--light); text-transform: uppercase; letter-spacing: 0.5px; }
+
+/* ══════════════════════════════════
+   SOBRE MÍ
+══════════════════════════════════ */
+#sobre-mi {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: clamp(2rem,5vw,5rem); align-items: center;
+}
+@media (max-width: 820px) {
+  #sobre-mi { grid-template-columns: 1fr; }
+  .about-visual { max-width: 380px; margin: 0 auto; width: 100%; }
+}
+
+.about-visual { position: relative; }
+.about-img-box {
+  width: 100%; aspect-ratio: 4/5;
+  background: var(--dark3); border: 1px solid rgba(255,255,255,0.07); border-radius: var(--r);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  font-size: clamp(3rem,8vw,5rem); gap: 0.75rem; position: relative; overflow: hidden;
+}
+.about-img-box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--yellow); }
+.about-img-label { font-size: 0.75rem; color: var(--muted); font-family: 'Barlow Condensed', sans-serif; letter-spacing: 2px; text-transform: uppercase; }
+
+.about-badge {
+  position: absolute; bottom: -1rem; right: -1rem;
+  width: clamp(85px,12vw,115px); height: clamp(85px,12vw,115px);
+  background: var(--yellow); border-radius: 3px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Bebas Neue', sans-serif; font-size: clamp(0.72rem,1.5vw,0.92rem);
+  letter-spacing: 1.5px; color: #000; text-align: center; line-height: 1.3; padding: 0.75rem;
+}
+@media (max-width: 480px) { .about-badge { display: none; } }
+
+.about-content .section-desc { max-width: 100%; }
+.skills-list { margin-top: 1.5rem; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.skill-tag {
+  background: rgba(245,196,0,0.09); border: 1px solid rgba(245,196,0,0.22);
+  color: var(--yellow); padding: 0.3rem 0.8rem; border-radius: 3px;
+  font-size: clamp(0.68rem,1.5vw,0.8rem); font-family: 'Barlow Condensed', sans-serif;
+  letter-spacing: 1px; text-transform: uppercase;
+}
+
+/* ══════════════════════════════════
+   CONTACTO
+══════════════════════════════════ */
+#contacto { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem,5vw,5rem); align-items: start; }
+@media (max-width: 820px) { #contacto { grid-template-columns: 1fr; } }
+
+.contact-items { margin-top: 2rem; display: flex; flex-direction: column; gap: 1.1rem; }
+.contact-item {
+  display: flex; align-items: center; gap: 1rem;
+  text-decoration: none; color: var(--light); transition: color 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+.contact-item:hover { color: var(--yellow); }
+.ci-icon {
+  width: clamp(42px,6vw,52px); height: clamp(42px,6vw,52px);
+  background: var(--dark3); border: 1px solid rgba(255,255,255,0.07); border-radius: var(--r);
+  display: flex; align-items: center; justify-content: center;
+  font-size: clamp(1rem,2.5vw,1.3rem); flex-shrink: 0; transition: border-color 0.2s, background 0.2s;
+}
+.contact-item:hover .ci-icon { border-color: var(--yellow); background: rgba(245,196,0,0.07); }
+.ci-text strong { display: block; font-family: 'Barlow Condensed', sans-serif; font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 0.1rem; }
+.ci-text span { font-size: clamp(0.88rem,2vw,1rem); font-weight: 600; }
+
+/* ── Form ── */
+.contact-form { display: flex; flex-direction: column; gap: 0.9rem; }
+.form-row { display: flex; gap: 0.9rem; }
+.form-row .form-group { flex: 1; min-width: 0; }
+@media (max-width: 480px) { .form-row { flex-direction: column; } }
+
+.form-group { display: flex; flex-direction: column; gap: 0.35rem; }
+.form-group label { font-size: 0.7rem; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); font-family: 'Barlow Condensed', sans-serif; }
+.form-group input,
+.form-group textarea,
+.form-group select {
+  background: var(--dark3); border: 1px solid rgba(255,255,255,0.1); border-radius: var(--r);
+  padding: clamp(0.65rem,2vw,0.85rem) 1rem; color: var(--light);
+  font-family: 'Barlow', sans-serif; font-size: clamp(0.85rem,2vw,0.95rem);
+  transition: border-color 0.2s; outline: none; width: 100%; resize: vertical;
+  -webkit-appearance: none; appearance: none;
+}
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus { border-color: var(--yellow); }
+.form-group select option { background: #1c1c1c; }
+.form-group textarea { min-height: 110px; }
+
+/* ── WhatsApp float ── */
+.wa-float {
+  position: fixed; bottom: clamp(1.1rem,4vw,2rem); right: clamp(1.1rem,4vw,2rem); z-index: 900;
+  background: #25D366; color: #fff;
+  width: clamp(50px,8vw,62px); height: clamp(50px,8vw,62px);
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: clamp(1.3rem,3vw,1.8rem);
+  box-shadow: 0 4px 20px rgba(37,211,102,0.4);
+  text-decoration: none; transition: transform 0.2s, box-shadow 0.2s;
+  animation: pulse 2.5s infinite;
+}
+.wa-float:hover { transform: scale(1.1); box-shadow: 0 6px 28px rgba(37,211,102,0.55); }
+
+/* ══════════════════════════════════
+   FOOTER
+══════════════════════════════════ */
+footer {
+  background: var(--dark2); border-top: 1px solid rgba(255,255,255,0.06);
+  padding: clamp(1.25rem,4vw,2rem) var(--pad);
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;
+}
+.footer-text { font-size: clamp(0.75rem,1.8vw,0.88rem); color: var(--muted); }
+.footer-text span { color: var(--yellow); }
+.footer-links { display: flex; gap: clamp(0.8rem,3vw,1.5rem); list-style: none; flex-wrap: wrap; }
+.footer-links a { font-size: clamp(0.75rem,1.8vw,0.88rem); color: var(--muted); text-decoration: none; transition: color 0.2s; }
+.footer-links a:hover { color: var(--yellow); }
+
+/* ══════════════════════════════════
+   REVEAL & ANIMATIONS
+══════════════════════════════════ */
+.reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.reveal.visible { opacity: 1; transform: none; }
+
+@keyframes fadeUp { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:none; } }
+@keyframes fadeIn { from { opacity:0; } to { opacity:0.03; } }
+@keyframes pulse {
+  0%,100% { box-shadow: 0 4px 20px rgba(37,211,102,0.4); }
+  50%      { box-shadow: 0 4px 30px rgba(37,211,102,0.65); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- WhatsApp flotante -->
+<a href="https://wa.me/5493620000000" target="_blank" rel="noopener noreferrer" class="wa-float" aria-label="Contactar por WhatsApp">💬</a>
+
+<!-- NAVBAR -->
+<nav id="navbar">
+  <a href="#hero" class="logo">
+    <div class="logo-icon">⚡</div>
+    <div class="logo-text">ELECTRO<span>OFICIO</span></div>
+  </a>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="#servicios">Servicios</a></li>
+    <li><a href="#trabajos">Trabajos</a></li>
+    <li><a href="#sobre-mi">Sobre Mí</a></li>
+    <li><a href="#contacto" class="nav-cta">Contacto</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Abrir menú" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="hero-content">
+    <div class="hero-badge">Electricista Matriculado · Construcciones</div>
+    <h1>TRABAJO<br>CON <span class="accent">VOLTAJE</span><br>Y PRECISIÓN</h1>
+    <p class="hero-sub">Instalaciones eléctricas residenciales, comerciales e industriales. Construcciones y refacciones. Trabajo garantizado y seguro en Resistencia, Chaco.</p>
+    <div class="hero-actions">
+      <a href="#contacto" class="btn btn-primary">⚡ Pedir Presupuesto</a>
+      <a href="#trabajos" class="btn btn-outline">Ver Trabajos →</a>
+    </div>
+    <div class="hero-stats">
+      <div><div class="stat-num">+200</div><div class="stat-label">Trabajos realizados</div></div>
+      <div><div class="stat-num">15</div><div class="stat-label">Años de experiencia</div></div>
+      <div><div class="stat-num">100%</div><div class="stat-label">Garantizados</div></div>
+    </div>
+  </div>
+  <div class="hero-deco" aria-hidden="true">⚡</div>
+</section>
+
+<!-- SERVICIOS -->
+<section id="servicios" class="sec sec-alt">
+  <div class="reveal">
+    <p class="section-label">¿Qué hago?</p>
+    <h2 class="section-title">MIS SERVICIOS</h2>
+    <p class="section-desc">Soluciones completas para hogares, comercios e industrias. Materiales de primera y tiempos cumplidos.</p>
+  </div>
+  <div class="services-grid reveal">
+    <div class="service-card">
+      <span class="service-icon">🔌</span>
+      <div class="service-name">Instalaciones Eléctricas</div>
+      <p class="service-desc">Instalaciones nuevas y renovaciones de tableros, circuitos y tomas. Casas, departamentos y locales.</p>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">🏗️</span>
+      <div class="service-name">Construcciones</div>
+      <p class="service-desc">Obras de albañilería, remodelaciones, aberturas, revoque y terminaciones integrales.</p>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">🔧</span>
+      <div class="service-name">Mantenimiento</div>
+      <p class="service-desc">Reparaciones eléctricas urgentes, llaves, tomacorrientes, puesta a tierra y más.</p>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">💡</span>
+      <div class="service-name">Iluminación LED</div>
+      <p class="service-desc">Diseño e instalación de sistemas de iluminación eficiente. Interior, exterior y decorativa.</p>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">🏭</span>
+      <div class="service-name">Industrial y Comercial</div>
+      <p class="service-desc">Tableros industriales, conexiones trifásicas y automatizaciones para comercios.</p>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">📋</span>
+      <div class="service-name">Certificaciones</div>
+      <p class="service-desc">Planos eléctricos, certificados de aptitud y habilitaciones municipales.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TRABAJOS -->
+<section id="trabajos" class="sec">
+  <div class="reveal">
+    <p class="section-label">Portfolio</p>
+    <h2 class="section-title">MIS TRABAJOS</h2>
+    <p class="section-desc">Reemplazá estas tarjetas con fotos reales de tus obras para mostrar tu trabajo.</p>
+  </div>
+  <div class="works-grid reveal">
+    <div class="work-card">
+      <div class="work-thumb wt1">🔌</div>
+      <div class="work-info"><div class="work-tag">Residencial</div><div class="work-title">Instalación completa — Casa familiar</div></div>
+    </div>
+    <div class="work-card">
+      <div class="work-thumb wt2">💡</div>
+      <div class="work-info"><div class="work-tag">Iluminación</div><div class="work-title">Sistema LED — Local comercial</div></div>
+    </div>
+    <div class="work-card">
+      <div class="work-thumb wt3">🏗️</div>
+      <div class="work-info"><div class="work-tag">Construcción</div><div class="work-title">Ampliación y refacción — Departamento</div></div>
+    </div>
+    <div class="work-card">
+      <div class="work-thumb wt4">⚡</div>
+      <div class="work-info"><div class="work-tag">Industrial</div><div class="work-title">Tablero trifásico — Taller mecánico</div></div>
+    </div>
+    <div class="work-card">
+      <div class="work-thumb wt5">🔧</div>
+      <div class="work-info"><div class="work-tag">Mantenimiento</div><div class="work-title">Puesta a tierra + tablero — Oficinas</div></div>
+    </div>
+    <div class="work-card">
+      <div class="work-thumb wt6">🏠</div>
+      <div class="work-info"><div class="work-tag">Construcción</div><div class="work-title">Remodelación integral — Casa chorizo</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SOBRE MÍ -->
+<section id="sobre-mi" class="sec sec-alt">
+  <div class="about-visual reveal">
+    <div class="about-img-box">
+      <span>👷</span>
+      <span class="about-img-label">Tu foto aquí</span>
+    </div>
+    <div class="about-badge">MAT.<br>HABILITADO</div>
+  </div>
+  <div class="about-content reveal">
+    <p class="section-label">Quién soy</p>
+    <h2 class="section-title">SOBRE MÍ</h2>
+    <p class="section-desc">Soy electricista matriculado con más de 15 años de experiencia en instalaciones eléctricas y construcciones. Trabajo en Resistencia y toda la zona del Chaco.</p>
+    <p class="section-desc" style="margin-top:1rem;">Me especializo en proyectos residenciales, comerciales e industriales. Cada trabajo lo hago con materiales de primera calidad y siguiendo todas las normativas vigentes.</p>
+    <div class="skills-list">
+      <span class="skill-tag">Electricidad</span>
+      <span class="skill-tag">Albañilería</span>
+      <span class="skill-tag">Plomería</span>
+      <span class="skill-tag">Iluminación LED</span>
+      <span class="skill-tag">Tableros</span>
+      <span class="skill-tag">Construcciones</span>
+      <span class="skill-tag">Puesta a tierra</span>
+      <span class="skill-tag">Certificaciones</span>
+    </div>
+    <div style="margin-top:2rem;">
+      <a href="#contacto" class="btn btn-primary">Contactarme →</a>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section id="contacto" class="sec">
+  <div class="contact-info reveal">
+    <p class="section-label">Hablemos</p>
+    <h2 class="section-title">CONTACTO</h2>
+    <p class="section-desc">¿Necesitás un presupuesto? ¿Tenés una urgencia? Escribime o llamame y te respondo a la brevedad.</p>
+    <div class="contact-items">
+      <a href="tel:+54362XXXXXXX" class="contact-item">
+        <div class="ci-icon">📞</div>
+        <div class="ci-text"><strong>Teléfono / WhatsApp</strong><span>+54 362 XXX-XXXX</span></div>
+      </a>
+      <a href="mailto:tumail@gmail.com" class="contact-item">
+        <div class="ci-icon">✉️</div>
+        <div class="ci-text"><strong>Email</strong><span>tumail@gmail.com</span></div>
+      </a>
+      <div class="contact-item">
+        <div class="ci-icon">📍</div>
+        <div class="ci-text"><strong>Zona de trabajo</strong><span>Resistencia y Gran Chaco</span></div>
+      </div>
+      <div class="contact-item">
+        <div class="ci-icon">⏰</div>
+        <div class="ci-text"><strong>Horario</strong><span>Lunes a Sábado · 7:00 – 19:00</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="reveal">
+    <form class="contact-form" id="contact-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="nombre">Nombre</label>
+          <input type="text" id="nombre" placeholder="Tu nombre" required autocomplete="name">
+        </div>
+        <div class="form-group">
+          <label for="tel">Teléfono</label>
+          <input type="tel" id="tel" placeholder="Tu teléfono" autocomplete="tel">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="tu@email.com" required autocomplete="email">
+      </div>
+      <div class="form-group">
+        <label for="servicio">Servicio</label>
+        <select id="servicio">
+          <option value="">Seleccionar servicio...</option>
+          <option>Instalación eléctrica</option>
+          <option>Construcción / Refacción</option>
+          <option>Mantenimiento</option>
+          <option>Iluminación LED</option>
+          <option>Industrial / Comercial</option>
+          <option>Certificación / Planos</option>
+          <option>Otro</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="mensaje">Mensaje</label>
+        <textarea id="mensaje" placeholder="Contame qué necesitás..."></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary" style="align-self:flex-start;">Enviar Consulta ⚡</button>
+      <div id="form-msg" role="alert" style="display:none;color:var(--yellow);font-size:0.9rem;margin-top:0.3rem;"></div>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p class="footer-text">© 2025 <span>ElectroOficio</span> — Todos los derechos reservados.</p>
+  <ul class="footer-links">
+    <li><a href="#servicios">Servicios</a></li>
+    <li><a href="#trabajos">Trabajos</a></li>
+    <li><a href="#sobre-mi">Sobre Mí</a></li>
+    <li><a href="#contacto">Contacto</a></li>
+  </ul>
+</footer>
+
+<script>
+/* ── Hamburger ── */
+const hamburger = document.getElementById('hamburger');
+const navLinks   = document.getElementById('nav-links');
+
+function closeMenu() {
+  navLinks.classList.remove('open');
+  hamburger.classList.remove('open');
+  hamburger.setAttribute('aria-expanded','false');
+  document.body.style.overflow = '';
+}
+
+hamburger.addEventListener('click', (e) => {
+  e.stopPropagation();
+  const isOpen = navLinks.classList.toggle('open');
+  hamburger.classList.toggle('open', isOpen);
+  hamburger.setAttribute('aria-expanded', isOpen);
+  document.body.style.overflow = isOpen ? 'hidden' : '';
+});
+
+navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+
+document.addEventListener('click', (e) => {
+  if (navLinks.classList.contains('open') && !navLinks.contains(e.target) && e.target !== hamburger) closeMenu();
+});
+
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMenu(); });
+
+/* ── Scroll reveal ── */
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) { entry.target.classList.add('visible'); io.unobserve(entry.target); }
+  });
+}, { threshold: 0.07 });
+
+document.querySelectorAll('.reveal').forEach((el, i) => {
+  el.style.transitionDelay = (i % 4) * 0.08 + 's';
+  io.observe(el);
+});
+
+/* ── Navbar border on scroll ── */
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  navbar.style.borderBottomColor = window.scrollY > 40 ? 'rgba(245,196,0,0.28)' : 'rgba(245,196,0,0.15)';
+}, { passive: true });
+
+/* ── Form ── */
+document.getElementById('contact-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const msg = document.getElementById('form-msg');
+  msg.style.display = 'block';
+  msg.textContent = '✅ ¡Mensaje enviado! Te contactaré a la brevedad.';
+  e.target.reset();
+  setTimeout(() => { msg.style.display = 'none'; }, 5000);
+});
+</script>
+</body>
+</html>
