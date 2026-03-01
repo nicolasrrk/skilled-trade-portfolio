@@ -516,32 +516,7 @@ footer {
     <h2 class="section-title">MIS TRABAJOS</h2>
     <p class="section-desc">Reemplazá estas tarjetas con fotos reales de tus obras para mostrar tu trabajo.</p>
   </div>
-  <div class="works-grid reveal">
-    <div class="work-card">
-      <div class="work-thumb wt1">🔌</div>
-      <div class="work-info"><div class="work-tag">Residencial</div><div class="work-title">Instalación completa — Casa familiar</div></div>
-    </div>
-    <div class="work-card">
-      <div class="work-thumb wt2">💡</div>
-      <div class="work-info"><div class="work-tag">Iluminación</div><div class="work-title">Sistema LED — Local comercial</div></div>
-    </div>
-    <div class="work-card">
-      <div class="work-thumb wt3">🏗️</div>
-      <div class="work-info"><div class="work-tag">Construcción</div><div class="work-title">Ampliación y refacción — Departamento</div></div>
-    </div>
-    <div class="work-card">
-      <div class="work-thumb wt4">⚡</div>
-      <div class="work-info"><div class="work-tag">Industrial</div><div class="work-title">Tablero trifásico — Taller mecánico</div></div>
-    </div>
-    <div class="work-card">
-      <div class="work-thumb wt5">🔧</div>
-      <div class="work-info"><div class="work-tag">Mantenimiento</div><div class="work-title">Puesta a tierra + tablero — Oficinas</div></div>
-    </div>
-    <div class="work-card">
-      <div class="work-thumb wt6">🏠</div>
-      <div class="work-info"><div class="work-tag">Construcción</div><div class="work-title">Remodelación integral — Casa chorizo</div></div>
-    </div>
-  </div>
+  <div class="works-grid reveal" id="works-container"></div>
 </section>
 
 <!-- SOBRE MÍ -->
@@ -705,6 +680,49 @@ document.getElementById('contact-form').addEventListener('submit', (e) => {
   e.target.reset();
   setTimeout(() => { msg.style.display = 'none'; }, 5000);
 });
+</script>
+<script>
+const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQTtafnmul-NjqhNvi8dNuCpwMzv3G8ryLQihxCInpq02ivcxmJv-Rbn6dfhYXQHiXJJuvIY6wXTYun/pub?output=csv";
+
+async function cargarTrabajos() {
+  const res = await fetch(sheetURL);
+  const data = await res.text();
+
+  const filas = data.split("\n").slice(1);
+  const contenedor = document.getElementById("works-container");
+
+  contenedor.innerHTML = "";
+
+  let estilos = ["wt1","wt2","wt3","wt4","wt5","wt6"];
+  let i = 0;
+
+  filas.forEach(fila => {
+    if(!fila) return;
+
+    const columnas = fila.split(",");
+
+    const categoria = columnas[0];
+    const titulo = columnas[1];
+    const imagen = columnas[2];
+
+    contenedor.innerHTML += `
+      <div class="work-card">
+        <div class="work-thumb ${estilos[i % estilos.length]}"
+             style="background:url('${imagen}') center/cover;">
+        </div>
+
+        <div class="work-info">
+          <div class="work-tag">${categoria}</div>
+          <div class="work-title">${titulo}</div>
+        </div>
+      </div>
+    `;
+
+    i++;
+  });
+}
+
+cargarTrabajos();
 </script>
 </body>
 </html>
