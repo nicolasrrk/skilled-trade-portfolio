@@ -684,41 +684,34 @@ document.getElementById('contact-form').addEventListener('submit', (e) => {
 <script>
 const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQTtafnmul-NjqhNvi8dNuCpwMzv3G8ryLQihxCInpq02ivcxmJv-Rbn6dfhYXQHiXJJuvIY6wXTYun/pub?output=csv";
 
-async function cargarTrabajos() {
+async function cargarTrabajos(){
   const res = await fetch(sheetURL);
-  const data = await res.text();
+  const text = await res.text();
 
-  const filas = data.split("\n").slice(1);
+  const filas = text.trim().split("\n").slice(1);
   const contenedor = document.getElementById("works-container");
-
   contenedor.innerHTML = "";
 
-  let estilos = ["wt1","wt2","wt3","wt4","wt5","wt6"];
-  let i = 0;
+  const estilos = ["wt1","wt2","wt3","wt4","wt5","wt6"];
 
-  filas.forEach(fila => {
-    if(!fila) return;
+  filas.forEach((fila,i)=>{
+    const columnas = fila.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g);
 
-    const columnas = fila.split(",");
-
-    const categoria = columnas[0];
-    const titulo = columnas[1];
-    const imagen = columnas[2];
+    const categoria = columnas?.[0]?.replaceAll('"',"") || "";
+    const titulo    = columnas?.[1]?.replaceAll('"',"") || "";
+    const imagen    = columnas?.[2]?.replaceAll('"',"") || "";
 
     contenedor.innerHTML += `
       <div class="work-card">
         <div class="work-thumb ${estilos[i % estilos.length]}"
-             style="background:url('${imagen}') center/cover;">
+             style="background-image:url('${imagen}'); background-size:cover; background-position:center;">
         </div>
-
         <div class="work-info">
           <div class="work-tag">${categoria}</div>
           <div class="work-title">${titulo}</div>
         </div>
       </div>
     `;
-
-    i++;
   });
 }
 
