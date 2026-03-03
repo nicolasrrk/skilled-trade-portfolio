@@ -148,49 +148,85 @@ nav {
 /* ── mobile nav ── */
 @media (max-width: 820px) {
 
+  /* Botón hamburguesa */
   .hamburger {
     display: flex;
-    position: relative;
-    z-index: 20;
+    position: fixed;
+    top: 18px;
+    right: 20px;
+    z-index: 100;
   }
 
+  /* Menú lateral */
   .nav-links {
-    display: flex;
     position: fixed;
-    inset: 0;
+    top: 0;
+    right: 0;
+    width: 75%;              /* ancho del menú */
+    max-width: 320px;        /* límite en celulares grandes */
+    height: 100dvh;
     background: rgba(8,8,8,0.98);
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 2.5rem;
-    z-index: 15;
 
-    transform: translateY(-100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    gap: 2rem;
+    padding: 2rem;
+
+    transform: translateX(100%);   /* oculto a la derecha */
     transition: transform 0.35s ease;
+    z-index: 90;
   }
 
   .nav-links.open {
-    transform: translateY(0);
+    transform: translateX(0);      /* entra suavemente */
   }
 
   .nav-links a {
-    font-size: 1.5rem;
-    letter-spacing: 3px;
+    font-size: 1.3rem;
+    letter-spacing: 2px;
+    text-align: center;
+  }
+
+  /* Fondo oscuro detrás del menú */
+  .nav-links::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100dvh;
+    background: rgba(0,0,0,0.5);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+
+  .nav-links.open::before {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* Ajuste para celulares pequeños */
+  @media (max-width: 400px) {
+    .nav-links {
+      width: 85%;
+    }
+
+    .nav-links a {
+      font-size: 1.1rem;
+    }
   }
 }
 
-/* Evita que el menú tape el botón */
-.hamburger {
-  position: relative;
-  z-index: 20;
-}
-
-/* Evita que el nav colapse en mobile */
+/* Evita que el nav colapse */
 nav {
   min-height: 60px;
 }
 
-/* Bloquea el scroll cuando el menú está abierto */
+/* Bloquea scroll cuando el menú está abierto */
 body.menu-open {
   overflow: hidden;
 }
